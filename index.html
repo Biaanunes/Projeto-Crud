@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Inicial</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Sistema de Livros</h1>
+
+        <div class="text-center mb-4">
+            <a href="/cadastro" class="btn btn-primary">Cadastrar Livro</a>
+        </div>
+
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Editora</th>
+                    <th>Autor</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="livros-tabela"></tbody>
+        </table>
+    </div>
+
+    <script>
+        fetch('/livros')
+            .then(res => res.json())
+            .then(livros => {
+                const tabela = document.getElementById('livros-tabela');
+
+                tabela.innerHTML = livros.map(livro => `
+                    <tr>
+                        <td>${livro.titulo}</td>
+                        <td>${livro.editora}</td>
+                        <td>${livro.autor}</td>
+                        <td>
+                            <a href="/atualizar?id=${livro.id}" class="btn btn-warning btn-sm">Editar</a>
+
+                            <form action="/deletar" method="post" style="display:inline;">
+                                <input type="hidden" name="id" value="${livro.id}">
+                                <button class="btn btn-danger btn-sm">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                `).join('');
+            });
+    </script>
+</body>
+</html>
