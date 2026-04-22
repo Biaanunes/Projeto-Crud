@@ -18,22 +18,18 @@ db.run(`
 )
   `);
 
-// Middleware para processar dados JSON e formulários
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-// Rota para exibir a página inicial
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-// Rota para exibir o formulário de cadastro
 app.get('/cadastro', (req, res) => {
     res.sendFile(__dirname + '/cadastro.html');
 });
 
-// Rota para lidar com a submissão do formulário de cadastro
 app.post('/livros', (req, res) => {
     const { titulo, autor, ano_publicacao, genero, editora, paginas, idioma, disponivel } = req.body;
   
@@ -48,7 +44,7 @@ app.post('/livros', (req, res) => {
     );
   });
 
-// Rota para exibir o formulário de atualização
+
 app.get('/atualizar', (req, res) => {
     res.sendFile(__dirname + '/atualizar.html');
 });
@@ -85,7 +81,6 @@ app.get('/livros/:id', (req, res) => {
     );
   });
 
-// Rota para lidar com a submissão do formulário de deleção
 app.delete('/livros/:id', (req, res) => {
     db.run(
       'DELETE FROM livros WHERE id = ?',
@@ -120,7 +115,6 @@ app.delete('/livros/:id', (req, res) => {
     );
   });
 
-// Rota para obter todos os livros
 app.get('/livros', (req, res) => {
     db.all('SELECT * FROM livros', [], (err, rows) => {
       res.json(rows);
